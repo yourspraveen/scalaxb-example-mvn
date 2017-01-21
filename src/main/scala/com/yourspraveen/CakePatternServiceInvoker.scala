@@ -1,17 +1,14 @@
 package com.yourspraveen
 
-import java.util.concurrent.{ExecutorService, Executors}
-
 import org.slf4j.LoggerFactory
 import com.typesafe.scalalogging._
-
 import scalaxb.{DispatchHttpClientsAsync, SoapClientsAsync}
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object CakePatternServiceInvoker {
-  val logger = Logger(LoggerFactory.getLogger("name"))
+  val logger = Logger(LoggerFactory.getLogger("CakePatternServiceInvoker"))
 
   def main(args: Array[String]): Unit = {
 
@@ -20,10 +17,17 @@ object CakePatternServiceInvoker {
     val futureResp = service.getWeather(Some("Nashville, Nashville International Airport"), Some("United States"))
 
     futureResp.onComplete{
-      case Success(resp) => logger.debug(resp.GetWeatherResult.toString)
-      case Failure(e) => logger.debug(s"Error: $e")
+      case Success(resp) => logger.info(resp.GetWeatherResult.toString)
+        shutdown
+      case Failure(e) => logger.error(s"Error: $e")
+        shutdown
     }(global)
 
+
+
+  }
+
+  def shutdown = {
     //shutting down dispatch client this will not stop the program execution
     dispatch.Http.shutdown
 
@@ -32,7 +36,7 @@ object CakePatternServiceInvoker {
   }
 }
 
-//to add headers to soap envelope header
+//to add headers to soap envelope header using cake pattern
 trait SecureDispatchHttpClientsAsync extends DispatchHttpClientsAsync with LazyLogging{
 
   //overriding default values with what we need
