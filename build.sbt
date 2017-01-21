@@ -21,7 +21,7 @@ lazy val root = (project in file(".")).
     name := "scalaxb-Example",
     libraryDependencies ++= Seq(dispatch),
     libraryDependencies ++= {
-      if (scalaVersion.value startsWith "2.11") Seq()
+      if (scalaVersion.value startsWith "2.10") Seq()
       else Seq(scalaXml, scalaParser)
     }).
   settings(
