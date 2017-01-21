@@ -1,0 +1,1 @@
+# scalaxb-example-mvn
