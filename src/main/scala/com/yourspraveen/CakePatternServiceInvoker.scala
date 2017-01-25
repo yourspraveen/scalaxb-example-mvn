@@ -2,6 +2,8 @@ package com.yourspraveen
 
 import org.slf4j.LoggerFactory
 import com.typesafe.scalalogging._
+import dispatch.{as, url}
+
 import scalaxb.{DispatchHttpClientsAsync, SoapClientsAsync}
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
@@ -57,11 +59,13 @@ trait SecureDispatchHttpClientsAsync extends DispatchHttpClientsAsync with LazyL
       logger.debug(in.toString)
       logger.debug("Headers : "+ headers.toString())
 
-      //add additional headers for suthentication as plain text avoid this!!!
-      val additionalHeaders = headers ++ Map[String, String]("username" -> "uname", "password" -> "pword")
+      //add additional headers as plain text avoid this!!!
+      val additionalHeaders = headers ++ Map[String, String]("token" -> "token")
 
       //passing back the customized header
-      super.request(in, address, additionalHeaders)
+      val req = url(address.toString).as_!("user","Password") //basic auth
+        .setBodyEncoding("UTF-8") <:< additionalHeaders << in
+      http(req > as.String)
     }
   }
 
