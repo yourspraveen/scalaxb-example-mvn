@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:schema xmlns:s="http://www.w3.org/2001/XMLSchema"
+          xmlns:tns="http://schemas.yourspraveen.com/TestService/v1/"
+          targetNamespace="http://schemas.yourspraveen.com/TestService/v1/">
+
+    <s:element name="GetDataRequest">
+        <s:complexType>
+            <s:sequence>
+                <s:element minOccurs="1" maxOccurs="1" name="id" type="s:string"/>
+            </s:sequence>
+        </s:complexType>
+    </s:element>
+
+    <s:simpleType name="carType">
+        <s:restriction base="s:string">
+            <s:enumeration value="Audi"/>
+            <s:enumeration value="Toyota"/>
+            <s:enumeration value="BMW"/>
+        </s:restriction>
+    </s:simpleType>
+
+    <s:complexType name="name">
+        <s:sequence>
+            <s:element name="firstname" type="s:string"/>
+            <s:element name="lastname" type="s:string"/>
+        </s:sequence>
+    </s:complexType>
+
+    <s:simpleType name="age">
+        <s:restriction base="s:integer">
+            <s:minInclusive value="0"/>
+            <s:maxInclusive value="100"/>
+        </s:restriction>
+    </s:simpleType>
+
+    <s:complexType name="personType">
+        <s:sequence>
+            <s:element name="name" type="tns:name"/>
+            <s:element name="age" type="tns:age"/>
+            <s:element name="dob" type="s:date"/>
+            <s:element name="car" type="tns:carType"/>
+        </s:sequence>
+    </s:complexType>
+    <s:element name="GetDataResponse">
+        <s:complexType>
+            <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="GetDataResult" type="tns:personType"/>
+            </s:sequence>
+        </s:complexType>
+    </s:element>
+</s:schema>

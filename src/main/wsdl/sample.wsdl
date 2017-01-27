@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:s="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="http://schemas.yourspraveen.com/TestService/v1/"
+                  xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                  xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
+                  xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                  targetNamespace="http://schemas.yourspraveen.com/TestService/v1/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.yourspraveen.com/TestService/v1/">
+            <s:include schemaLocation="../xsd/dataservice.xsd"/>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="GetDataSoapIn">
+        <wsdl:part name="parameters" element="tns:GetDataRequest" />
+    </wsdl:message>
+    <wsdl:message name="GetDataSoapOut">
+        <wsdl:part name="parameters" element="tns:GetDataResponse" />
+    </wsdl:message>
+    <wsdl:portType name="DataServiceSoapPort">
+        <wsdl:operation name="GetData">
+            <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Read data</documentation>
+            <wsdl:input message="tns:GetDataSoapIn" />
+            <wsdl:output message="tns:GetDataSoapOut" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="DataServiceSoapBinding" type="tns:DataServiceSoapPort">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="GetData">
+            <soap:operation soapAction="http://schemas.yourspraveen.com/TestService/v1/GetData" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" namespace="http://schemas.yourspraveen.com/TestService/v1/"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" namespace="http://schemas.yourspraveen.com/TestService/v1/"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="DataServiceService">
+        <documentation xmlns="http://schemas.xmlsoap.org/wsdl/" />
+        <wsdl:port name="DataServiceSoapPort" binding="tns:DataServiceSoapBinding">
+            <soap:address location="http://www.yourspraveen.com/services/DataService" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
